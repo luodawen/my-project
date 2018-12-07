@@ -8,6 +8,9 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+// import Vuex from 'vuex' //引入vuex
+
+// Vue.use(Vuex)  //配置Vuex
 
 Vue.config.productionTip = false
 
