@@ -39,7 +39,7 @@ export default {
 	},
 	computed: {
 		count () {
-			return store.state.count
+			return store.state.count //读取状态
 		}
 	},
 	methods: {
@@ -57,7 +57,7 @@ export default {
 				size: 10
 			};
 			// 获取列表 可根据后端要求改变page的方式
-			this.getList(this.page)
+			// this.getList(this.page)
 		}
 
 	},
