@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import GoTop from '@/components/GoTop'
 import myVuexTest from '@/components/myVuexTest'
 
+
 Vue.use(Router)
 
 export default new Router({
@@ -19,6 +20,7 @@ export default new Router({
       path:'/myVuexTest',
       name:'myVuexTest',
       component:myVuexTest
-    }
+    },
+    
   ]
 })

@@ -5,12 +5,18 @@
 			<button @click="increment">+</button>
 			<button @click="decrement">-</button>
 		</p>
+		<br>
+		<set-page></set-page>
+		<br>
+		<parent-div></parent-div>
 	</div>
 </template>
 <script>
 
 import Vue from 'vue'
 import Vuex from 'vuex'
+import setPage from './pagination'
+import parentDiv from './parent'
 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
@@ -35,6 +41,9 @@ export default {
 		decrement () {
 			store.commit('decrement')
 		}
+	},
+	components:{
+		setPage,parentDiv
 	}
 }
 </script>
