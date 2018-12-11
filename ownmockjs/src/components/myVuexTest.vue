@@ -6,7 +6,7 @@
 			<button @click="decrement">-</button>
 		</p>
 		<br>
-		<set-page></set-page>
+		<set-page :total="total" :current-page='current' :refresh='refresh' @pagechange="pagechange"></set-page>
 		<br>
 		<parent-div></parent-div>
 	</div>
@@ -29,6 +29,14 @@ const store = new Vuex.Store({
 })
 export default {
 	name:"myVuexTest",
+	data(){
+		return{
+			total: 100, //总条数
+			current: 1, //当前激活页
+			display: 6, //每页显示多少条
+			refresh: false, //是否刷新（第一页激活）有搜索时需要
+		}
+	},
 	computed: {
 		count () {
 			return store.state.count
@@ -40,7 +48,18 @@ export default {
 		},
 		decrement () {
 			store.commit('decrement')
+		},
+		//分页查询
+		pagechange(currentPage) {
+			this.refresh = false;
+			this.page = {
+				start: currentPage * 10,
+				size: 10
+			};
+			// 获取列表 可根据后端要求改变page的方式
+			this.getList(this.page)
 		}
+
 	},
 	components:{
 		setPage,parentDiv

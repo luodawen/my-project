@@ -1,109 +1,151 @@
 <template>
-  <div class="page-bar">
-    <ul>
-        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
-        <li v-if="cur==1"><a class="banclick">上一页</a></li>
-        <li v-for="(index,i) in indexs" :key="i" v-bind:class="{ 'active': cur == index}">
-            <a v-on:click="btnClick(index)">{{ index }}</a>
-        </li>
-        <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
-        <li v-if="cur == all"><a class="banclick">下一页</a></li>
-        <li><a>共<i>{{all}}</i>页</a></li>
+  <nav>
+    <ul class="pagination">
+      <li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(current - 1)"> « </a></li>
+      <li :class="{'disabled': current == 1}"><a href="javascript:;" @click="setCurrent(1)"> 首页 </a></li>
+      <li v-for="(p,index) in grouplist" :key="index" :class="{'active': current == p.val}">
+        <a href="javascript:;" @click="setCurrent(p.val)"> {{ p.text }} </a>
+      </li>
+      <li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(page)"> 尾页 </a></li>
+      <li :class="{'disabled': current == page}"><a href="javascript:;" @click="setCurrent(current + 1)"> »</a></li>
     </ul>
-</div>
+  </nav>
 </template>
+
 <script>
-//分页组件
-export default {
-  name:'pagination',
-  data: {
-    all: 8, //总页数
-    cur: 1//当前页码
-  },
-  watch: {
-    cur: function(oldValue , newValue){
-      console.log(arguments);
-    }
-  },
-  methods: {
-    btnClick: function(data){//页码点击事件
-      if(data != this.cur){
-        this.cur = data 
+  //分页组件
+  export default {
+    name: 'paging',
+    data() {
+      return {
+        current: this.currentPage
       }
     },
-    pageClick: function(){
-      console.log('现在在'+this.cur+'页');
-    }
-  },
-  computed: {
-    indexs: function(){
-      var left = 1;
-      var right = this.all;
-      var ar = [];
-      if(this.all>= 5){
-        if(this.cur > 3 && this.cur < this.all-2){
-          left = this.cur - 2
-          right = this.cur + 2
-        }else{
-          if(this.cur<=3){
-            left = 1
-            right = 5
-          }else{
-            right = this.all
-            left = this.all -4
+    props: {
+      total: {// 数据总条数
+        type: Number,
+        default: 0
+      },
+      display: {// 每页显示条数
+        type: Number,
+        default: 10
+      },
+      currentPage: {// 当前页码
+        type: Number,
+        default: 1
+      },
+      pagegroup: {// 分页条数
+        type: Number,
+        default: 5,
+        coerce: function (v) {
+          v = v > 0 ? v : 5;
+          return v % 2 === 1 ? v : v + 1;
+        }
+      },
+      refresh: { // 不是必须 搜索后默认第一页
+        type: Boolean,
+        default: false
+      }
+    },
+    computed: {
+      page: function () { // 总页数
+        return Math.floor(this.total / this.display);
+      },
+      grouplist: function () { // 获取分页页码
+        this.doRefresh();
+        let len = this.page, temp = [], list = [], count = Math.floor(this.pagegroup / 2), center = this.current;
+        if (len <= this.pagegroup) {
+          while (len--) {
+            temp.push({text: this.page - len, val: this.page - len});
           }
+          return temp;
+        }
+        while (len--) {
+          temp.push(this.page - len);
+        }
+        let idx = temp.indexOf(center);
+        (idx < count) && (center = center + count - idx);
+        (this.current > this.page - count) && (center = this.page - count);
+        temp = temp.splice(center - count - 1, this.pagegroup);
+        do {
+          let t = temp.shift();
+          list.push({
+            text: t,
+            val: t
+          });
+        } while (temp.length);
+        if (this.page > this.pagegroup) {
+          (this.current > count + 1) && list.unshift({text: '...', val: list[0].val - 1});
+          (this.current < this.page - count) && list.push({text: '...', val: list[list.length - 1].val + 1});
+        }
+        return list;
+      }
+    },
+    mounted() {
+      this.doRefresh()
+    },
+    methods: {
+      doRefresh() {
+        if (this.refresh) {
+          this.current = 1
+        }
+      },
+      setCurrent: function (idx) {
+        if (this.current !== idx && idx > 0 && idx < this.page + 1) {
+          this.current = idx;
+          this.$emit('pagechange', this.current);
         }
       }
-      while (left <= right){
-        ar.push(left)
-        left ++
-      }
-      return ar
     }
   }
-}
+
 </script>
 <style lang="less" scoped>
- .page-bar{
-    margin:40px;
-}
-ul,li{
-    margin: 0px;
-    padding: 0px;
-}
-li{
-    list-style: none
-}
-.page-bar li:first-child>a {
-   margin-left: 0px
-}
-.page-bar a{
-    border: 1px solid #ddd;
-    text-decoration: none;
-    position: relative;
+  .pagination {
+    font-family: "sans";
+    overflow: hidden;
+    display: table;
+    margin: 0 auto;
+    /*width: 100%;*/
+    height: 50px;
+    list-style: none;
+  }
+
+  .pagination li {
     float: left;
-    padding: 6px 12px;
-    margin-left: -1px;
-    line-height: 1.42857143;
-    color: #337ab7;
-    cursor: pointer
-}
-.page-bar a:hover{
-    background-color: #eee;
-}
-.page-bar a.banclick{
-    cursor:not-allowed;
-}
-.page-bar .active a{
+    height: 30px;
+    border-radius: 5px;
+    margin: 3px;
+    color: #000000;
+    background: white;
+  }
+
+  .pagination li :hover {
+    background: #696969;
+  }
+
+  .pagination li :hover a {
     color: #fff;
-    cursor: default;
-    background-color: #337ab7;
-    border-color: #337ab7;
-}
-.page-bar i{
-    font-style:normal;
-    color: #d44950;
-    margin: 0px 4px;
+  }
+
+  .pagination li a {
+    display: block;
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
     font-size: 12px;
-}
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+  }
+
+  .pagination .active {
+    background: #696969;
+  }
+
+  .pagination .active a {
+    color: #fff;
+  }
+
 </style>
