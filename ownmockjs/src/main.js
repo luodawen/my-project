@@ -9,6 +9,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 // import Vuex from 'vuex' //引入vuex
+import Mint from 'mint-ui';
+Vue.use(Mint);
 
 // Vue.use(Vuex)  //配置Vuex
 

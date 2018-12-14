@@ -6,7 +6,7 @@
         </div>
     </transition>
 </template>
-<script>
+<script scoped>
 // 回到顶部组件
 // 组件使用说明 <go-top></go-top>
 //transition使用的是vue的渐变效果

@@ -4,7 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 
 import GoTop from '@/components/GoTop'
 import myVuexTest from '@/components/myVuexTest'
-
+import dataSearch from '@/components/dataSearch'
 
 Vue.use(Router)
 
@@ -21,6 +21,10 @@ export default new Router({
       name:'myVuexTest',
       component:myVuexTest
     },
-    
+    {
+      path:'/dataSearch',
+      name:'dataSearch',
+      component:dataSearch
+    }
   ]
 })
