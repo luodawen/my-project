@@ -10,9 +10,11 @@ import App from './App'
 import router from './router'
 // import Vuex from 'vuex' //引入vuex
 import Mint from 'mint-ui';
+import 'mint-ui/lib/style.css'//mint-ui的css文件需要单独引入
 Vue.use(Mint);
 
 // Vue.use(Vuex)  //配置Vuex
+
 
 Vue.config.productionTip = false
 

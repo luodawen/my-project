@@ -10,8 +10,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 const portfinder = require('portfinder')
 
+const appData = require('../data.json') //引入data.json 后台数据
+const userList = appData.userList
+
+
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
+const bodyParser = require('body-parser')//express 解析body
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -22,6 +28,29 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    before(app){
+      app.use(bodyParser.json()); // for parsing application/json
+      app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+      app.post('/api/login',(req,res)=>{
+        let userData = req.body;//接收前端传来的参数，用户名和密码
+        let isExist = false; //用于判断用户是否存在
+        // console.log(1111)
+        setTimeout(()=>{
+          userList.map((user)=>{ //将data.json中存在的用户名，都进行匿名函数中的判断,user则是data.json中userList中的每一项子元素
+            if(user.username == userData.username && user.password == userData.password){
+              res.json({
+                ...user
+              })
+              isExist = true;
+              return;
+            }
+            if(!isExist){//如果用户不存在，则执行这个if语句
+              res.json("notFound") //向前端返回 notFound
+            }
+          })
+        },1000)//一秒之后在向前端发送请求的结果
+      });
+    },
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [

@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import GoTop from '@/components/GoTop'
 import myVuexTest from '@/components/myVuexTest'
 import dataSearch from '@/components/dataSearch'
+import myLogin from '@/views/myLogin'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path:'/dataSearch',
       name:'dataSearch',
       component:dataSearch
+    },
+    {
+      path:'/myLogin',
+      name:'/myLogin',
+      component:myLogin
     }
   ]
 })

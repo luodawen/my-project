@@ -106,7 +106,7 @@ div.infoIcon{
   border-radius: 50%;
   box-shadow: 1px 2px 10px #ddd;
   text-align: center;
-  line-height: 1.8rem;;
+  line-height: 2rem;
 }
 div.infoIcon img{
   width: 0.7rem;
