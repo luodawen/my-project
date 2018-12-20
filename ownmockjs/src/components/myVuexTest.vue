@@ -28,7 +28,7 @@ const store = new Vuex.Store({
   }
 })
 export default {
-	name:"myVuexTest",
+	name:"myVuextest",
 	data(){
 		return{
 			total: 100, //总条数
@@ -39,7 +39,7 @@ export default {
 	},
 	computed: {
 		count () {
-			return store.state.count //读取状态
+			return this.$store.state.count //读取状态
 		}
 	},
 	methods: {

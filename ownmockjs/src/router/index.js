@@ -3,9 +3,12 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
 import GoTop from '@/components/GoTop'
-import myVuexTest from '@/components/myVuexTest'
+import myVuextest from '@/components/myVuextest'
 import dataSearch from '@/components/dataSearch'
 import myLogin from '@/views/myLogin'
+import demo01 from '@/components/demo01'
+
+
 
 Vue.use(Router)
 
@@ -18,9 +21,9 @@ export default new Router({
       component: HelloWorld
     },
     {
-      path:'/myVuexTest',
-      name:'myVuexTest',
-      component:myVuexTest
+      path:'/myVuextest',
+      name:'myVuextest',
+      component:myVuextest
     },
     {
       path:'/dataSearch',
@@ -29,8 +32,18 @@ export default new Router({
     },
     {
       path:'/myLogin',
-      name:'/myLogin',
+      name:'myLogin',
       component:myLogin
+    },
+    {
+      path:'/demo01',
+      name:'demo01',
+      component:demo01
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: resolve => require(['@/views/Home/Home'],resolve)
     }
   ]
 })
