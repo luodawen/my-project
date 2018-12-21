@@ -44,6 +44,16 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: resolve => require(['@/views/Home/Home'],resolve)
+    },
+    {
+      path: '/resturantA',
+      name: 'resturantNameA',
+      component: resolve => require(['@/components/resturant/resturantNameA'],resolve)
+    },
+    {
+      path: '/resturantB',
+      name: 'resturantNameB',
+      component: resolve => require(['@/components/resturant/resturantNameB'],resolve)
     }
   ]
 })
